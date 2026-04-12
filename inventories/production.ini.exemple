@@ -35,16 +35,3 @@ vm-ubuntu-prod ansible_host=10.0.0.51
 webservers
 dbservers
 audit_targets
-
-# ------------------------------------------------------------------------------
-# VARIABLES SPÉCIFIQUES PAR GROUPE
-# ------------------------------------------------------------------------------
-
-[production:vars]
-# Variable pour ton rôle d'audit
-env_type=production
-is_hardened=true
-
-# Configuration SSH (Optionnel)
-# ansible_ssh_private_key_file=~/.ssh/id_rsa_prod
-# ansible_ssh_common_args='-o ProxyCommand="..."'
