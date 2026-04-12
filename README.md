@@ -32,7 +32,7 @@
 | 📦 **Gestion des paquets** | Mises à jour de sécurité automatisées (rôle `paquets`) |
 | 👤 **Gestion des utilisateurs** | Comptes, droits, sudoers (rôle `utilisateurs`) |
 | 🗂️ **Permissions & montages** | Sécurisation `/dev/shm`, `/tmp` (rôle `fichiers`) |
-| 📊 **Audit de conformité** | Vérification avec calcul de score ANSSI (rôle `audit`) |
+| 📊 **Audit de conformité** | Vérification avec calcul de score (rôle `audit`) |
 | 📝 **Rapports Markdown** | Générés dans `playbooks/reports/`, lisibles sur GitHub ou votre éditeur préféré |
 
 ---
@@ -166,7 +166,7 @@ Le projet couvre actuellement les niveaux **Minimal (M)** et **Intermédiaire (I
 
 ### 📄 Rapports au format PDF *(à planifié)*
 
-Les rapports d'audit sont actuellement générés en **Markdown**. L'objectif est de proposer également un **export PDF** automatique à la fin de chaque exécution, avec une mise en page soignée (logo, tableau de conformité, score ANSSI, date d'audit).
+Les rapports d'audit sont actuellement générés en **Markdown**. L'objectif est de proposer également un **export PDF** automatique à la fin de chaque exécution, avec une mise en page soignée (logo, tableau de conformité, score, date d'audit).
 
 ---
 
