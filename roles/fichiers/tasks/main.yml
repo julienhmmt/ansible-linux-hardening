@@ -7,7 +7,7 @@
   ansible.builtin.lineinfile:
     path: /etc/login.defs
     regexp: '^UMASK\s+'
-    line: 'UMASK           027'
+    line: 'UMASK           {{ system_umask }}'
     state: present
   tags: minimal
 
@@ -16,7 +16,7 @@
     dest: /etc/profile.d/umask.sh
     content: |
       # Recommandation ANSSI : umask restrictif
-      umask 027
+      umask {{ system_umask }}
     mode: '0644'
     owner: root
     group: root

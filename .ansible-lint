@@ -2,5 +2,6 @@
 
 skip_list:
   - command-instead-of-module # systemctl is-system-running has no systemd module equivalent
+  - command-instead-of-shell # audit check_cmd uses pipes, redirects, && and ||
   - role-name # Skip for template - users should customize role_name in meta/main.yml
   - yaml[line-length]

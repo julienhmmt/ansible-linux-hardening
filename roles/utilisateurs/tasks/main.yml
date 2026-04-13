@@ -27,9 +27,19 @@
     - mail
     - nobody
   register: utilisateurs_nologin_result
-  failed_when:
-    - utilisateurs_nologin_result.failed
-    - "'does not exist' not in utilisateurs_nologin_result.msg | default('')"
+  ignore_errors: true
+  tags:
+    - minimal
+
+- name: Vérifier les erreurs inattendues lors de la désactivation des shells
+  ansible.builtin.fail:
+    msg: "Erreur inattendue pour le compte {{ item.item }} : {{ item.msg }}"
+  when:
+    - item.failed
+    - "'does not exist' not in item.msg | default('')"
+  loop: "{{ utilisateurs_nologin_result.results }}"
+  loop_control:
+    label: "{{ item.item }}"
   tags:
     - minimal
 

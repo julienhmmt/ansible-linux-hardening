@@ -6,7 +6,7 @@
     audit_passed_count: 0
 
 - name: Exécuter les vérifications de sécurité
-  ansible.builtin.command: "{{ item.check_cmd }}"
+  ansible.builtin.shell: "{{ item.check_cmd }}"
   register: audit_check_output
   loop: "{{ audit_items }}"
   changed_when: false
