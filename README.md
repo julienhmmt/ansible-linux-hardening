@@ -7,26 +7,22 @@
 
 > Automatisation du **durcissement (hardening)** et de l'**audit de sécurité** de serveurs GNU/Linux (Debian & Ubuntu) selon les recommandations de l'**ANSSI BP-028**.
 
----
-
 ## 📑 Table des matières
 
 - [Fonctionnalités](#-fonctionnalités)
-- [Points de contrôle audités](#-points-de-contrôle-auditys)
+- [Points de contrôle](#-points-de-contrôle)
 - [Prérequis](#-prérequis)
-- [Installation](#-installation)
+- [Installation](#️-installation)
 - [Utilisation](#-utilisation)
-- [Exemple de rapport](#-exemple-de-rapport-daudit)
+- [Exemple de rapport d'audit](#-exemple-de-rapport-daudit)
 - [Structure du projet](#️-structure-du-projet)
-- [Contribution](#-contribution)
+- [Roadmap](#️-roadmap)
 - [Licence](#️-licence)
-
----
 
 ## 🚀 Fonctionnalités
 
 | Fonctionnalité | Description |
-|---|---|
+| -------------- | ----------- |
 | 🔒 **Durcissement système** | ASLR, paramètres sysctl (rôle `systeme`) |
 | 🌐 **Durcissement réseau** | Restrictions SSH, firewall (rôle `reseau`) |
 | 📦 **Gestion des paquets** | Mises à jour de sécurité automatisées (rôle `paquets`) |
@@ -35,9 +31,7 @@
 | 📊 **Audit de conformité** | Vérification avec calcul de score (rôle `audit`) |
 | 📝 **Rapports Markdown** | Générés dans `playbooks/reports/`, lisibles sur GitHub ou votre éditeur préféré |
 
----
-
-## ✅ Points de contrôle (Audit)
+## ✅ Points de contrôle
 
 Des rapports d'audit réels générés sur des machines de test sont disponibles dans le dossier [`playbooks/reports/`](playbooks/reports/) :
 
@@ -46,8 +40,6 @@ Des rapports d'audit réels générés sur des machines de test sont disponibles
 - 🟢 [`audit_vm-ubuntu_2026-04-11_freshinstall.md`](playbooks/reports/audit_vm-ubuntu_2026-04-11_freshinstall.md) — Ubuntu, état initial (fresh install)
 - 🔵 [`audit_vm-ubuntu_2026-04-11_after-playbook.md`](playbooks/reports/audit_vm-ubuntu_2026-04-11_after-playbook.md) — Ubuntu, après application du playbook
 
----
-
 ## 📦 Prérequis
 
 - Ansible **2.20+**
@@ -55,25 +47,21 @@ Des rapports d'audit réels générés sur des machines de test sont disponibles
 - Accès SSH avec privilèges `sudo` vers les cibles
 - Distributions supportées : **Debian 12/13**, **Ubuntu 22.04/24.04**
 
----
-
 ## 🛠️ Installation
 
-### 1. Cloner le projet
+### Cloner le projet
 
 ```bash
 git clone https://github.com/Makaveli81/Hardening-Linux-Template.git
 cd Hardening-Linux-Template
 ```
 
-### 2. Configurer l'inventaire
+### Configurer l'inventaire
 
 ```bash
 cp inventories/production.ini.exemple inventories/production.ini
 nano inventories/production.ini
 ```
-
----
 
 ## 🕹️ Utilisation
 
@@ -98,8 +86,6 @@ ansible-playbook -i inventories/your-inventories.ini playbooks/harden_linux.yml 
 > [!WARNING]
 > Testez toujours le durcissement sur un environnement de **staging** avant la production.
 
----
-
 ## 📊 Exemple de rapport d'audit
 
 Les rapports sont générés automatiquement dans le dossier `reports/` après chaque exécution d'audit.
@@ -116,11 +102,9 @@ Des rapports d'audit réels générés sur des machines de test sont disponibles
 - 🟢 [`audit_vm-ubuntu_2026-04-11_freshinstall.md`](playbooks/reports/audit_vm-ubuntu_2026-04-11_freshinstall.md) — Ubuntu, état initial (fresh install)
 - 🔵 [`audit_vm-ubuntu_2026-04-11_after-playbook.md`](playbooks/reports/audit_vm-ubuntu_2026-04-11_after-playbook.md) — Ubuntu, après application du playbook
 
----
-
 ## ⚙️ Structure du projet
 
-```
+```bash
 .
 ├── group_vars/
 │   └── all.yml                     # Variables globales partagées
@@ -141,10 +125,7 @@ Des rapports d'audit réels générés sur des machines de test sont disponibles
 ├── .gitignore
 ├── ansible.cfg                     # Configuration Ansible
 └── README.md
-
 ```
-
----
 
 ## 🗺️ Roadmap
 
@@ -152,7 +133,6 @@ Le projet couvre actuellement les niveaux **Minimal (M)** et **Intermédiaire (I
 
 > [!NOTE]
 > Le référentiel ANSSI BP-028 v2.0 définit 4 niveaux cumulatifs : **M** (Minimal) → **I** (Intermédiaire) → **R** (Renforcé) → **E** (Élevé).
-
 
 ### 🟣 Niveau R — Renforcé *(à planifié)*
 
@@ -166,16 +146,12 @@ Le projet couvre actuellement les niveaux **Minimal (M)** et **Intermédiaire (I
 
 Les rapports d'audit sont actuellement générés en **Markdown**. L'objectif est de proposer également un **export PDF** automatique à la fin de chaque exécution, avec une mise en page soignée (logo, tableau de conformité, score, date d'audit).
 
----
-
-
 ## ⚖️ Licence
 
 Distribué sous licence **MIT**. Voir [`LICENSE`](LICENSE) pour plus d'informations.
 
 ---
 
-<div align="center">
-  Développé avec ❤️ pour un web plus sécurisé.<br>
-  Référence : <a href="https://messervices.cyber.gouv.fr/documents-guides/fr_np_linux_configuration-v2.0.pdf">ANSSI BP-028</a>
-</div>
+Développé avec ❤️ pour un web plus sécurisé.
+
+Référence : [ANSSI BP-028](https://messervices.cyber.gouv.fr/documents-guides/fr_np_linux_configuration-v2.0.pdf)
