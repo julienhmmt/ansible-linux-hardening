@@ -6,7 +6,7 @@
 - name: (R18) Verrouiller le mot de passe du compte root (Imputabilité)
   ansible.builtin.user:
     name: root
-    password_lock: yes
+    password_lock: true
   when: disable_root_account | default(true)
   tags:
     - minimal
@@ -15,7 +15,7 @@
   ansible.builtin.user:
     name: "{{ item }}"
     shell: /usr/sbin/nologin
-  loop: 
+  loop:
     - bin
     - sys
     - daemon
@@ -26,7 +26,10 @@
     - lp
     - mail
     - nobody
-  ignore_errors: true  # On ignore si certains comptes n'existent pas sur la distribution
+  register: utilisateurs_nologin_result
+  failed_when:
+    - utilisateurs_nologin_result.failed
+    - "'does not exist' not in utilisateurs_nologin_result.msg | default('')"
   tags:
     - minimal
 
@@ -55,7 +58,7 @@
       # (noexec a été retiré pour permettre le fonctionnement d'Ansible)
       Defaults requiretty, use_pty, umask=0077
       Defaults ignore_dot, env_reset
-    mode: '0440'
+    mode: 'u=r,g=r,o='
     owner: root
     group: root
     validate: 'visudo -cf %s'
@@ -74,22 +77,17 @@
     dest: /etc/security/pwquality.conf
     content: |
       # Configuration ANSSI - Robustesse des mots de passe
-      
       # Longueur minimale du mot de passe (14 caractères recommandés)
       minlen = 14
-      
       # Nombre minimum de classes de caractères requises (Maj, Min, Chiffres, Spéciaux)
       minclass = 4
-      
       # Nombre de tentatives autorisées avant de rejeter
       retry = 3
-      
       # Forcer l'application de ces règles même pour l'utilisateur root
       enforce_for_root
-     
       # Rejeter les mots de passe qui contiennent le nom d'utilisateur
       usercheck = 1
-    mode: '0644'
+    mode: 'u=rw,g=r,o=r'
     owner: root
     group: root
   tags:

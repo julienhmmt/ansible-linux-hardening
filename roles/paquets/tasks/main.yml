@@ -5,7 +5,7 @@
 
 - name: (R8) Mettre à jour le cache APT et tous les paquets du système
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     upgrade: safe
   tags: minimal
 
@@ -13,8 +13,8 @@
   ansible.builtin.apt:
     name: "{{ item }}"
     state: absent
-    purge: yes
-    autoremove: yes # Nettoie automatiquement les dépendances orphelines
+    purge: true
+    autoremove: true # Nettoie automatiquement les dépendances orphelines
   loop:
     - nis            # Protocole d'annuaire obsolète et non sécurisé
     - xinetd         # Super-démon souvent inutile sur un serveur moderne

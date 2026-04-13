@@ -1,4 +1,5 @@
 ---
+
 - name: Audit de conformité ANSSI BP-028
   hosts: all
   become: true

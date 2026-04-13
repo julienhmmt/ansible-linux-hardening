@@ -44,6 +44,7 @@ Des rapports d'audit réels générés sur des machines de test sont disponibles
 
 - Ansible **2.20+**
 - Python **3.11+** sur le contrôleur
+- Collections `posix` et `community.general` (à installer avec la commande `ansible-galaxy collection install -r requirements.yml`)
 - Accès SSH avec privilèges `sudo` vers les cibles
 - Distributions supportées : **Debian 12/13**, **Ubuntu 22.04/24.04**
 
@@ -52,8 +53,8 @@ Des rapports d'audit réels générés sur des machines de test sont disponibles
 ### Cloner le projet
 
 ```bash
-git clone https://github.com/Makaveli81/Hardening-Linux-Template.git
-cd Hardening-Linux-Template
+git clone https://github.com/Makaveli81/ansible-linux-hardening.git
+cd ansible-linux-hardening
 ```
 
 ### Configurer l'inventaire
@@ -61,6 +62,31 @@ cd Hardening-Linux-Template
 ```bash
 cp inventories/production.ini.exemple inventories/production.ini
 nano inventories/production.ini
+```
+
+### Utiliser un environnement python3 virtuel
+
+L'utilisation d'un environnement virtuel python3 permet d'avoir les dépendances directement dans le dépôt plutôt que de les installer sur votre système.
+
+Avec cet utilisation, les versions des dépendances seront résolues grâce aux fichier `requirements.txt`, permettant une idempotence entre les systèmes.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Pour installer les dépendances d'ansible, exécutez la commande `ansible-galaxy` suivante :
+
+```bash
+ansible-galaxy collection install -r requirements.yml
+ansible-galaxy collection list
+
+# en avril 2026, les versions sont les suivantes :
+# Collection                               Version
+# ---------------------------------------- -------
+# ansible.posix                            2.1.0  
+# community.general                        12.5.0 
 ```
 
 ## 🕹️ Utilisation
@@ -81,6 +107,20 @@ ansible-playbook -i inventories/your-inventories.ini playbooks/harden_linux.yml 
 
 ```bash
 ansible-playbook -i inventories/your-inventories.ini playbooks/harden_linux.yml --syntax-check
+```
+
+### Lancer le formatage des fichiers yaml
+
+```bash
+# à exécuter à la racine du projet
+yamllint .
+```
+
+### Lancer le formatage ansible-lint
+
+```bash
+# à exécuter à la racine du projet
+ansible-lint --yamllint .yamllint --config-file .ansible-lint .
 ```
 
 > [!WARNING]

@@ -1,31 +1,31 @@
 ---
+
 - name: Initialiser les compteurs de l'audit
   ansible.builtin.set_fact:
     audit_results: []
-    passed_count: 0
+    audit_passed_count: 0
 
 - name: Exécuter les vérifications de sécurité
-  ansible.builtin.shell: "{{ item.check_cmd }}"
-  register: check_output
+  ansible.builtin.command: "{{ item.check_cmd }}"
+  register: audit_check_output
   loop: "{{ audit_items }}"
   changed_when: false
   failed_when: false
 
 - name: Compiler les résultats et calculer le score
   ansible.builtin.set_fact:
-    audit_results: "{{ audit_results + [{ 
-        'name': item.item.name, 
-        'status': (item.stdout == item.item.expected), 
-        'expected': item.item.expected, 
-        'actual': item.stdout, 
-        'desc': item.item.desc 
-      }] }}"
-    passed_count: "{{ passed_count | int + (1 if item.stdout == item.item.expected else 0) }}"
-  loop: "{{ check_output.results }}"
+    audit_results: >-
+      {{ audit_results + [{'name': item.item.name,
+        'status': (item.stdout == item.item.expected),
+        'expected': item.item.expected,
+        'actual': item.stdout,
+        'desc': item.item.desc}] }}
+    audit_passed_count: "{{ audit_passed_count | int + (1 if item.stdout == item.item.expected else 0) }}"
+  loop: "{{ audit_check_output.results }}"
 
 - name: Calculer le score final en %
   ansible.builtin.set_fact:
-    audit_score: "{{ (passed_count | int / audit_items | length * 100) | round(1) }}"
+    audit_score: "{{ (audit_passed_count | int / audit_items | length * 100) | round(1) }}"
 
 - name: Générer le rapport d'audit (temporaire sur la cible)
   ansible.builtin.template:
@@ -36,8 +36,9 @@
 - name: Rapatrier le rapport sur le serveur Ansible (local)
   ansible.builtin.fetch:
     src: "/tmp/audit_{{ inventory_hostname }}.md"
-    dest: "reports/audit_{{ inventory_hostname }}_{{ ansible_facts['date_time']['date'] }}_{{ ansible_facts['date_time']['hour'] }}h{{ ansible_facts['date_time']['minute'] }}.md"
-    flat: yes
+    dest: >-
+      reports/audit_{{ inventory_hostname }}_{{ ansible_facts['date_time']['date'] }}_{{ ansible_facts['date_time']['hour'] }}h{{ ansible_facts['date_time']['minute'] }}.md
+    flat: true
 
 - name: Nettoyer le rapport temporaire sur la cible
   ansible.builtin.file:
@@ -46,4 +47,7 @@
 
 - name: Afficher le score final
   ansible.builtin.debug:
-    msg: "Audit terminé pour {{ inventory_hostname }}. Score : {{ audit_score }}%. Rapport local : reports/audit_{{ inventory_hostname }}_{{ ansible_facts['date_time']['date'] }}_{{ ansible_facts['date_time']['hour'] }}h{{ ansible_facts['date_time']['minute'] }}.md"
+    msg: >-
+      Audit terminé pour {{ inventory_hostname }}.
+      Score : {{ audit_score }}%.
+      Rapport local : reports/audit_{{ inventory_hostname }}_{{ ansible_facts['date_time']['date'] }}_{{ ansible_facts['date_time']['hour'] }}h{{ ansible_facts['date_time']['minute'] }}.md

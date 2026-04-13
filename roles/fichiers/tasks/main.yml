@@ -34,16 +34,16 @@
     mode: "{{ item.mode }}"
   loop:
     - { path: '/etc/passwd', mode: '0644', group: 'root' }
-    - { path: '/etc/shadow', mode: '0640', group: 'shadow' } 
+    - { path: '/etc/shadow', mode: '0640', group: 'shadow' }
   tags: intermediaire
 
 - name: (R51) Activer la protection des liens (symlinks, hardlinks, fifos)
   ansible.posix.sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
-    sysctl_set: yes
+    sysctl_set: true
     state: present
-    reload: yes
+    reload: true
   loop:
     - { name: 'fs.protected_symlinks', value: '1' }
     - { name: 'fs.protected_hardlinks', value: '1' }
@@ -54,9 +54,9 @@
 - name: (R34) S'assurer que le sticky bit est présent sur les répertoires temporaires
   ansible.builtin.file:
     path: "{{ item }}"
-    # Le mode 1777 donne tous les droits (777) MAIS active le sticky bit (1) : 
+    # Le mode 1777 donne tous les droits (777) MAIS active le sticky bit (1) :
     # seul le propriétaire d'un fichier peut le supprimer.
-    mode: '1777' 
+    mode: '1777'
   loop:
     - /tmp
     - /var/tmp
